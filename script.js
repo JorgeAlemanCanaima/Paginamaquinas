@@ -1,459 +1,592 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Elementos del DOM
-  const btnInicio = document.getElementById("btn-inicio");
-  const selectUnidades = document.getElementById("select-temas");
-  const btnMantenimiento = document.getElementById("btn-mantenimiento");
-  const navbar = document.querySelector('.navbar');
-  const statNumbers = document.querySelectorAll('.stat-number');
-  const interactiveCards = document.querySelectorAll('.interactive-card');
-  const learnMoreBtns = document.querySelectorAll('.learn-more-btn');
+// Variables globales para Three.js
+let scene, camera, renderer, controls;
+let currentComponent = null;
+let componentMeshes = {};
+let animationSpeed = 1;
+let lightIntensity = 1;
 
-  // Función para animar contadores
-  function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
+// Inicialización cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Laboratorio Virtual 3D cargado exitosamente');
     
-    function updateCounter() {
-      start += increment;
-      if (start < target) {
-        element.textContent = Math.floor(start);
-        requestAnimationFrame(updateCounter);
-      } else {
-        element.textContent = target;
-      }
-    }
+    // Inicializar funcionalidades
+    initialize3D();
+    initializeEventListeners();
+    initializeAnimations();
+    initializeSimulator();
+    initializeTutorials();
+    initializePractices();
     
-    updateCounter();
-  }
-
-  // Función para verificar si un elemento está en el viewport
-  function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  }
-
-  // Función para animar elementos cuando entran en el viewport
-  function animateOnScroll() {
-    const elements = document.querySelectorAll('.interactive-card, .timeline-item, .resource-card');
-    
-    elements.forEach(element => {
-      if (isInViewport(element) && !element.classList.contains('animated')) {
-        element.classList.add('animated');
-        element.style.animation = 'fadeInUp 0.8s ease-out forwards';
-      }
-    });
-  }
-
-  // Función para manejar el scroll del navbar
-  function handleNavbarScroll() {
-    if (window.scrollY > 100) {
-      navbar.style.background = 'rgba(24, 26, 27, 0.98)';
-      navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
-    } else {
-      navbar.style.background = 'rgba(24, 26, 27, 0.95)';
-      navbar.style.boxShadow = 'none';
-    }
-  }
-
-  // Función para mostrar tooltips en las cards
-  function showCardTooltip(event, card) {
-    const tooltip = document.createElement('div');
-    tooltip.className = 'card-tooltip';
-    tooltip.textContent = `Haz clic para aprender más sobre ${card.dataset.category}`;
-    tooltip.style.cssText = `
-      position: absolute;
-      background: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      pointer-events: none;
-      z-index: 1000;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    `;
-    
-    document.body.appendChild(tooltip);
-    
-    const rect = card.getBoundingClientRect();
-    tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
-    tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
-    
-    setTimeout(() => tooltip.style.opacity = '1', 10);
-    
-    return tooltip;
-  }
-
-  // Función para ocultar tooltip
-  function hideCardTooltip(tooltip) {
-    if (tooltip) {
-      tooltip.style.opacity = '0';
-      setTimeout(() => tooltip.remove(), 300);
-    }
-  }
-
-  // Función para agregar efectos de partículas al botón de mantenimiento
-  function createParticleEffect(event) {
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    for (let i = 0; i < 8; i++) {
-      const particle = document.createElement('div');
-      particle.style.cssText = `
-        position: fixed;
-        width: 4px;
-        height: 4px;
-        background: #a0ff00;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1000;
-        left: ${centerX}px;
-        top: ${centerY}px;
-      `;
-      
-      document.body.appendChild(particle);
-      
-      const angle = (i / 8) * Math.PI * 2;
-      const velocity = 100 + Math.random() * 50;
-      const vx = Math.cos(angle) * velocity;
-      const vy = Math.sin(angle) * velocity;
-      
-      let opacity = 1;
-      let scale = 1;
-      
-      function animateParticle() {
-        const currentX = parseFloat(particle.style.left);
-        const currentY = parseFloat(particle.style.top);
-        
-        particle.style.left = (currentX + vx * 0.016) + 'px';
-        particle.style.top = (currentY + vy * 0.016) + 'px';
-        
-        opacity -= 0.02;
-        scale -= 0.02;
-        
-        particle.style.opacity = opacity;
-        particle.style.transform = `scale(${scale})`;
-        
-        if (opacity > 0 && scale > 0) {
-          requestAnimationFrame(animateParticle);
-        } else {
-          particle.remove();
-        }
-      }
-      
-      requestAnimationFrame(animateParticle);
-    }
-  }
-
-  // Función para agregar efectos de typing en el título
-  function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-      if (i < text.length) {
-        element.textContent += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      }
-    }
-    
-    type();
-  }
-
-  // Función para manejar la navegación suave
-  function smoothScrollTo(target) {
-    const element = document.querySelector(target);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  }
-
-  // Función para agregar efectos de parallax
-  function handleParallax() {
-    const scrolled = window.pageYOffset;
-    const parallaxElements = document.querySelectorAll('.floating-card');
-    
-    parallaxElements.forEach((element, index) => {
-      const speed = 0.5 + (index * 0.1);
-      const yPos = -(scrolled * speed);
-      element.style.transform = `translateY(${yPos}px)`;
-    });
-  }
-
-  // Event Listeners
-  if (btnInicio) {
-    btnInicio.addEventListener("click", function (event) {
-      event.preventDefault();
-      smoothScrollTo('.hero');
-    });
-  }
-
-  if (selectUnidades) {
-    selectUnidades.addEventListener("change", function () {
-      const selectedPage = this.value;
-      if (selectedPage) {
-        // Agregar efecto de transición antes de cambiar de página
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.3s ease';
-        
-        setTimeout(() => {
-          window.location.href = selectedPage;
-        }, 300);
-      }
-    });
-  }
-
-  if (btnMantenimiento) {
-    btnMantenimiento.addEventListener("click", function (event) {
-      event.preventDefault();
-      createParticleEffect(event);
-      
-      // Agregar efecto de transición antes de cambiar de página
-      document.body.style.opacity = '0';
-      document.body.style.transition = 'opacity 0.3s ease';
-      
-      setTimeout(() => {
-        window.location.href = "mantenimiento.html";
-      }, 500);
-    });
-  }
-
-  // Event listeners para las cards interactivas
-  interactiveCards.forEach(card => {
-    let tooltip = null;
-    
-    card.addEventListener('mouseenter', (event) => {
-      tooltip = showCardTooltip(event, card);
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      hideCardTooltip(tooltip);
-    });
-    
-    card.addEventListener('click', () => {
-      // Agregar efecto de ripple
-      const ripple = document.createElement('div');
-      ripple.style.cssText = `
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(102, 126, 234, 0.3);
-        transform: scale(0);
-        animation: ripple 0.6s linear;
-        pointer-events: none;
-      `;
-      
-      const rect = card.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height);
-      const x = event.clientX - rect.left - size / 2;
-      const y = event.clientY - rect.top - size / 2;
-      
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = x + 'px';
-      ripple.style.top = y + 'px';
-      
-      card.style.position = 'relative';
-      card.appendChild(ripple);
-      
-      setTimeout(() => ripple.remove(), 600);
-    });
-  });
-
-  // Event listeners para los botones "Aprender Más"
-  learnMoreBtns.forEach(btn => {
-    btn.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      
-      // Agregar efecto de pulso
-      btn.style.animation = 'pulse 0.6s ease-in-out';
-      setTimeout(() => {
-        btn.style.animation = '';
-      }, 600);
-      
-      // Aquí puedes agregar lógica para mostrar más información
-      const card = btn.closest('.interactive-card');
-      const category = card.dataset.category;
-      
-      // Ejemplo: mostrar alerta con información adicional
-      const info = {
-        processing: 'El procesamiento incluye ALU, unidad de control, registros y caché.',
-        memory: 'La memoria incluye RAM, ROM, caché L1/L2/L3 y memoria virtual.',
-        io: 'Los dispositivos I/O incluyen USB, PCIe, SATA y conectores de red.'
-      };
-      
-      if (info[category]) {
-        showInfoModal(info[category], card.querySelector('.card-title').textContent);
-      }
-    });
-  });
-
-  // Función para mostrar modal de información
-  function showInfoModal(content, title) {
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    `;
-    
-    modal.innerHTML = `
-      <div style="
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        max-width: 500px;
-        margin: 20px;
-        position: relative;
-        transform: scale(0.8);
-        transition: transform 0.3s ease;
-      ">
-        <button onclick="this.closest('.modal').remove()" style="
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          background: none;
-          border: none;
-          font-size: 24px;
-          cursor: pointer;
-          color: #666;
-        ">&times;</button>
-        <h3 style="color: #1d3557; margin-bottom: 20px;">${title}</h3>
-        <p style="color: #666; line-height: 1.6;">${content}</p>
-      </div>
-    `;
-    
-    modal.classList.add('modal');
-    document.body.appendChild(modal);
-    
-    setTimeout(() => {
-      modal.style.opacity = '1';
-      modal.querySelector('div').style.transform = 'scale(1)';
-    }, 10);
-  }
-
-  // Event listeners para scroll
-  window.addEventListener('scroll', () => {
-    handleNavbarScroll();
-    animateOnScroll();
-    handleParallax();
-  });
-
-  // Event listener para resize
-  window.addEventListener('resize', () => {
-    // Recalcular posiciones de elementos flotantes
-    handleParallax();
-  });
-
-  // Inicialización de contadores cuando entran en el viewport
-  const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px 0px -100px 0px'
-  };
-
-  const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const statNumber = entry.target;
-        const target = parseInt(statNumber.dataset.target);
-        animateCounter(statNumber, target);
-        statsObserver.unobserve(statNumber);
-      }
-    });
-  }, observerOptions);
-
-  statNumbers.forEach(stat => {
-    statsObserver.observe(stat);
-  });
-
-  // Agregar CSS para animaciones adicionales
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes ripple {
-      to {
-        transform: scale(4);
-        opacity: 0;
-      }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    
-    .card-tooltip {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      pointer-events: none;
-      z-index: 1000;
-      white-space: nowrap;
-    }
-    
-    .interactive-card.animated {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .interactive-card:not(.animated) {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Inicializar efectos
-  handleNavbarScroll();
-  animateOnScroll();
-  
-  // Efecto de typing en el título principal (opcional)
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) {
-    const originalText = heroTitle.textContent;
-    typeWriter(heroTitle, originalText, 50);
-  }
-
-  // Agregar efecto de cursor parpadeante al título
-  if (heroTitle) {
-    heroTitle.style.borderRight = '3px solid #667eea';
-    heroTitle.style.animation = 'blink 1s infinite';
-    
-    const blinkStyle = document.createElement('style');
-    blinkStyle.textContent = `
-      @keyframes blink {
-        0%, 50% { border-color: transparent; }
-        51%, 100% { border-color: #667eea; }
-      }
-    `;
-    document.head.appendChild(blinkStyle);
-  }
-
-  console.log('🚀 Arquitectura de Máquinas - Página cargada con éxito!');
-  console.log('✨ Funcionalidades interactivas activadas');
-  console.log('📱 Diseño responsivo implementado');
-  console.log('🎨 Efectos visuales y animaciones cargados');
+    console.log('✅ Todas las funcionalidades 3D han sido activadas');
 });
+
+// Inicialización de Three.js
+function initialize3D() {
+    // Configurar escena
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf8f9fa);
+    
+    // Configurar cámara
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(5, 5, 5);
+    
+    // Configurar renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(500, 400);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
+    // Agregar renderer al contenedor hero
+    const heroContainer = document.getElementById('hero-3d-container');
+    if (heroContainer) {
+        heroContainer.appendChild(renderer.domElement);
+        renderer.domElement.style.width = '100%';
+        renderer.domElement.style.height = '100%';
+    }
+    
+    // Configurar controles
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    
+    // Configurar iluminación
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 10, 5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+    
+    // Crear modelos 3D básicos
+    createBasicModels();
+    
+    // Iniciar loop de renderizado
+    animate();
+}
+
+// Crear modelos 3D básicos
+function createBasicModels() {
+    // CPU
+    const cpuGeometry = new THREE.BoxGeometry(1, 0.1, 1);
+    const cpuMaterial = new THREE.MeshPhongMaterial({ color: 0x2563eb });
+    const cpu = new THREE.Mesh(cpuGeometry, cpuMaterial);
+    cpu.position.set(-2, 0, 0);
+    scene.add(cpu);
+    componentMeshes.cpu = cpu;
+    
+    // RAM
+    const ramGeometry = new THREE.BoxGeometry(0.8, 0.05, 0.3);
+    const ramMaterial = new THREE.MeshPhongMaterial({ color: 0x1d4ed8 });
+    const ram = new THREE.Mesh(ramGeometry, ramMaterial);
+    ram.position.set(0, 0, 0);
+    scene.add(ram);
+    componentMeshes.ram = ram;
+    
+    // GPU
+    const gpuGeometry = new THREE.BoxGeometry(1.2, 0.2, 0.8);
+    const gpuMaterial = new THREE.MeshPhongMaterial({ color: 0x3b82f6 });
+    const gpu = new THREE.Mesh(gpuGeometry, gpuMaterial);
+    gpu.position.set(2, 0, 0);
+    scene.add(gpu);
+    componentMeshes.gpu = gpu;
+    
+    // Agregar etiquetas
+    addLabels();
+}
+
+// Agregar etiquetas a los componentes
+function addLabels() {
+    const loader = new THREE.FontLoader();
+    // Por simplicidad, usamos geometrías básicas como etiquetas
+    Object.keys(componentMeshes).forEach(key => {
+        const labelGeometry = new THREE.PlaneGeometry(0.5, 0.2);
+        const labelMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+        const label = new THREE.Mesh(labelGeometry, labelMaterial);
+        label.position.set(0, 0.5, 0);
+        componentMeshes[key].add(label);
+    });
+}
+
+// Loop de animación
+function animate() {
+    requestAnimationFrame(animate);
+    
+    // Rotar componentes
+    Object.values(componentMeshes).forEach(mesh => {
+        mesh.rotation.y += 0.01 * animationSpeed;
+    });
+    
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+// Inicializar event listeners
+function initializeEventListeners() {
+    // Botones de control 3D
+    document.getElementById('rotate-left')?.addEventListener('click', () => rotateCamera('left'));
+    document.getElementById('rotate-right')?.addEventListener('click', () => rotateCamera('right'));
+    document.getElementById('zoom-in')?.addEventListener('click', () => zoomCamera('in'));
+    document.getElementById('zoom-out')?.addEventListener('click', () => zoomCamera('out'));
+    
+    // Controles del laboratorio
+    document.getElementById('view-mode')?.addEventListener('change', handleViewModeChange);
+    document.getElementById('animation-speed')?.addEventListener('input', handleAnimationSpeedChange);
+    document.getElementById('light-intensity')?.addEventListener('input', handleLightIntensityChange);
+    
+    // Selector de componentes
+    document.querySelectorAll('.component-item').forEach(item => {
+        item.addEventListener('click', () => selectComponent(item.dataset.component));
+    });
+    
+    // Botones de acción
+    document.getElementById('btn-explode')?.addEventListener('click', explodeComponent);
+    document.getElementById('btn-cut')?.addEventListener('click', cutComponent);
+    document.getElementById('btn-measure')?.addEventListener('click', measureComponent);
+    document.getElementById('btn-animate')?.addEventListener('click', animateComponent);
+    
+    // Botones principales
+    document.getElementById('btn-explorar-3d')?.addEventListener('click', start3DExploration);
+    document.getElementById('btn-tutorial')?.addEventListener('click', showTutorial);
+}
+
+// Funciones de control de cámara
+function rotateCamera(direction) {
+    const angle = direction === 'left' ? 0.5 : -0.5;
+    camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);
+    controls.update();
+}
+
+function zoomCamera(direction) {
+    const factor = direction === 'in' ? 0.9 : 1.1;
+    camera.position.multiplyScalar(factor);
+    controls.update();
+}
+
+// Manejo de cambios en controles
+function handleViewModeChange(event) {
+    const mode = event.target.value;
+    switch(mode) {
+        case 'wireframe':
+            Object.values(componentMeshes).forEach(mesh => {
+                mesh.material.wireframe = true;
+            });
+            break;
+        case 'solid':
+            Object.values(componentMeshes).forEach(mesh => {
+                mesh.material.wireframe = false;
+            });
+            break;
+        case 'transparent':
+            Object.values(componentMeshes).forEach(mesh => {
+                mesh.material.transparent = true;
+                mesh.material.opacity = 0.7;
+            });
+            break;
+        case 'xray':
+            Object.values(componentMeshes).forEach(mesh => {
+                mesh.material.transparent = true;
+                mesh.material.opacity = 0.3;
+            });
+            break;
+    }
+}
+
+function handleAnimationSpeedChange(event) {
+    animationSpeed = parseFloat(event.target.value);
+    document.getElementById('speed-value').textContent = event.target.value + 'x';
+}
+
+function handleLightIntensityChange(event) {
+    lightIntensity = parseFloat(event.target.value);
+    document.getElementById('light-value').textContent = Math.round(event.target.value * 100) + '%';
+    
+    // Actualizar intensidad de luz
+    scene.children.forEach(child => {
+        if (child.isLight) {
+            child.intensity = lightIntensity;
+        }
+    });
+}
+
+// Selección de componentes
+function selectComponent(componentType) {
+    // Remover selección previa
+    document.querySelectorAll('.component-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    // Seleccionar nuevo componente
+    const selectedItem = document.querySelector(`[data-component="${componentType}"]`);
+    if (selectedItem) {
+        selectedItem.classList.add('selected');
+        currentComponent = componentType;
+        updateComponentInfo(componentType);
+        highlightComponent(componentType);
+    }
+}
+
+// Actualizar información del componente
+function updateComponentInfo(componentType) {
+    const infoContainer = document.getElementById('component-info');
+    const componentInfo = {
+        cpu: {
+            name: 'Unidad Central de Procesamiento',
+            description: 'El cerebro de la computadora que ejecuta todas las operaciones',
+            specs: 'Velocidad: Hasta 5 GHz, Núcleos: Múltiples, Arquitectura: x86-64'
+        },
+        ram: {
+            name: 'Memoria de Acceso Aleatorio',
+            description: 'Almacena temporalmente datos e instrucciones para el CPU',
+            specs: 'Velocidad: Hasta 6400 MT/s, Capacidad: Hasta 128 GB, Tipo: DDR5'
+        },
+        gpu: {
+            name: 'Unidad de Procesamiento Gráfico',
+            description: 'Procesa gráficos y cálculos paralelos complejos',
+            specs: 'Memoria: Hasta 24 GB GDDR6X, Ray Tracing: Sí, DLSS: Sí'
+        }
+    };
+    
+    const info = componentInfo[componentType];
+    if (info && infoContainer) {
+        infoContainer.innerHTML = `
+            <h5>${info.name}</h5>
+            <p>${info.description}</p>
+            <div class="specs">
+                <strong>Especificaciones:</strong><br>
+                ${info.specs}
+            </div>
+        `;
+    }
+}
+
+// Resaltar componente seleccionado
+function highlightComponent(componentType) {
+    // Remover resaltado previo
+    Object.values(componentMeshes).forEach(mesh => {
+        mesh.material.emissive.setHex(0x000000);
+    });
+    
+    // Resaltar componente seleccionado
+    if (componentMeshes[componentType]) {
+        componentMeshes[componentType].material.emissive.setHex(0x3b82f6);
+    }
+}
+
+// Funciones de acción
+function explodeComponent() {
+    if (!currentComponent) return;
+    
+    const mesh = componentMeshes[currentComponent];
+    if (mesh) {
+        // Crear efecto de explosión
+        const originalPosition = mesh.position.clone();
+        const targetPosition = originalPosition.clone().multiplyScalar(1.5);
+        
+        new TWEEN.Tween(mesh.position)
+            .to(targetPosition, 1000)
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .start();
+    }
+}
+
+function cutComponent() {
+    if (!currentComponent) return;
+    
+    const mesh = componentMeshes[currentComponent];
+    if (mesh) {
+        // Simular corte mostrando interior
+        mesh.material.transparent = true;
+        mesh.material.opacity = 0.5;
+        
+        // Crear geometría interna
+        const internalGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+        const internalMaterial = new THREE.MeshPhongMaterial({ color: 0x1e293b });
+        const internal = new THREE.Mesh(internalGeometry, internalMaterial);
+        internal.position.copy(mesh.position);
+        scene.add(internal);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+            scene.remove(internal);
+            mesh.material.opacity = 1;
+        }, 3000);
+    }
+}
+
+function measureComponent() {
+    if (!currentComponent) return;
+    
+    const mesh = componentMeshes[currentComponent];
+    if (mesh) {
+        // Mostrar dimensiones
+        const dimensions = mesh.geometry.parameters;
+        alert(`Dimensiones del ${currentComponent.toUpperCase()}:\nAncho: ${dimensions.width}\nAlto: ${dimensions.height}\nProfundidad: ${dimensions.depth}`);
+    }
+}
+
+function animateComponent() {
+    if (!currentComponent) return;
+    
+    const mesh = componentMeshes[currentComponent];
+    if (mesh) {
+        // Animación de rotación rápida
+        new TWEEN.Tween(mesh.rotation)
+            .to({ y: mesh.rotation.y + Math.PI * 4 }, 2000)
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .start();
+    }
+}
+
+// Funciones principales
+function start3DExploration() {
+    alert('🚀 Iniciando exploración 3D del laboratorio virtual...');
+    // Aquí se podría abrir una nueva vista o modal con más funcionalidades
+}
+
+function showTutorial() {
+    alert('📚 Abriendo tutorial interactivo...');
+    // Aquí se podría mostrar un modal o navegar a la sección de tutoriales
+}
+
+// Inicialización de animaciones
+function initializeAnimations() {
+    // Animación de contadores
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.dataset.target);
+        animateCounter(stat, target);
+    });
+}
+
+// Función para animar contadores
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 20);
+}
+
+// Inicialización del simulador
+function initializeSimulator() {
+    const startBtn = document.getElementById('btn-start-assembly');
+    const prevBtn = document.getElementById('btn-prev-step');
+    const nextBtn = document.getElementById('btn-next-step');
+    const autoBtn = document.getElementById('btn-auto-assembly');
+    
+    if (startBtn) startBtn.addEventListener('click', startAssembly);
+    if (prevBtn) prevBtn.addEventListener('click', previousStep);
+    if (nextBtn) nextBtn.addEventListener('click', nextStep);
+    if (autoBtn) autoBtn.addEventListener('click', autoAssembly);
+}
+
+// Funciones del simulador
+function startAssembly() {
+    document.getElementById('btn-start-assembly').disabled = true;
+    document.getElementById('btn-prev-step').disabled = false;
+    document.getElementById('btn-next-step').disabled = false;
+    
+    updateStep(1);
+    updateProgress(12.5);
+}
+
+function previousStep() {
+    const currentStep = parseInt(document.getElementById('current-step').textContent);
+    if (currentStep > 1) {
+        updateStep(currentStep - 1);
+        updateProgress((currentStep - 1) * 12.5);
+    }
+}
+
+function nextStep() {
+    const currentStep = parseInt(document.getElementById('current-step').textContent);
+    if (currentStep < 8) {
+        updateStep(currentStep + 1);
+        updateProgress(currentStep * 12.5);
+    }
+}
+
+function autoAssembly() {
+    let step = 1;
+    const interval = setInterval(() => {
+        updateStep(step);
+        updateProgress(step * 12.5);
+        step++;
+        
+        if (step > 8) {
+            clearInterval(interval);
+            completeAssembly();
+        }
+    }, 1000);
+}
+
+function updateStep(step) {
+    document.getElementById('current-step').textContent = step;
+    
+    // Actualizar instrucciones según el paso
+    const instructions = [
+        'Preparar el gabinete y verificar compatibilidad',
+        'Instalar la placa base en el gabinete',
+        'Instalar el CPU en el socket de la placa base',
+        'Instalar el sistema de enfriamiento del CPU',
+        'Instalar la memoria RAM en los slots correspondientes',
+        'Instalar la tarjeta gráfica en el slot PCIe',
+        'Conectar la fuente de poder y cablear todos los componentes',
+        'Verificar conexiones y realizar prueba de encendido'
+    ];
+    
+    document.getElementById('step-content').innerHTML = `<p>${instructions[step - 1]}</p>`;
+    
+    // Marcar componente como completado
+    const componentList = document.querySelectorAll('.component-check');
+    if (componentList[step - 1]) {
+        componentList[step - 1].classList.add('completed');
+    }
+}
+
+function updateProgress(percentage) {
+    document.getElementById('step-progress').style.width = percentage + '%';
+}
+
+function completeAssembly() {
+    alert('🎉 ¡Ensamblaje completado exitosamente!');
+    document.getElementById('btn-start-assembly').disabled = false;
+    document.getElementById('btn-prev-step').disabled = true;
+    document.getElementById('btn-next-step').disabled = true;
+}
+
+// Inicialización de tutoriales
+function initializeTutorials() {
+    document.querySelectorAll('.tutorial-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tutorial = this.closest('.tutorial-card').dataset.tutorial;
+            startTutorial(tutorial);
+        });
+    });
+}
+
+function startTutorial(tutorialType) {
+    alert(`📚 Iniciando tutorial: ${tutorialType}`);
+    // Aquí se implementaría la lógica específica de cada tutorial
+}
+
+// Inicialización de prácticas
+function initializePractices() {
+    // Tabs de práctica
+    document.querySelectorAll('.practice-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.practice-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            loadPractice(this.dataset.practice);
+        });
+    });
+    
+    // Herramientas de práctica
+    document.getElementById('tool-label')?.addEventListener('click', () => activateTool('label'));
+    document.getElementById('tool-highlight')?.addEventListener('click', () => activateTool('highlight'));
+    document.getElementById('tool-measure')?.addEventListener('click', () => activateTool('measure'));
+    document.getElementById('tool-rotate')?.addEventListener('click', () => activateTool('rotate'));
+    
+    // Botón de envío
+    document.getElementById('btn-submit-practice')?.addEventListener('click', submitPractice);
+}
+
+function loadPractice(level) {
+    const practices = {
+        basic: {
+            title: 'Identificación de Componentes',
+            description: 'Identifica y etiqueta los diferentes componentes de una computadora',
+            objectives: ['Reconocer componentes principales', 'Entender la función de cada parte', 'Identificar conexiones entre componentes']
+        },
+        intermediate: {
+            title: 'Análisis de Arquitectura',
+            description: 'Analiza la arquitectura interna de los componentes principales',
+            objectives: ['Comprender la jerarquía de memoria', 'Analizar el flujo de datos', 'Identificar cuellos de botella']
+        },
+        advanced: {
+            title: 'Optimización de Rendimiento',
+            description: 'Optimiza la configuración para máximo rendimiento',
+            objectives: ['Overclocking seguro', 'Configuración de memoria', 'Optimización de refrigeración']
+        }
+    };
+    
+    const practice = practices[level];
+    if (practice) {
+        document.getElementById('practice-title').textContent = practice.title;
+        document.getElementById('practice-description').textContent = practice.description;
+        
+        const objectivesList = document.getElementById('practice-objectives');
+        objectivesList.innerHTML = practice.objectives.map(obj => `<li>${obj}</li>`).join('');
+    }
+}
+
+function activateTool(tool) {
+    alert(`🛠️ Herramienta activada: ${tool}`);
+    // Aquí se implementaría la lógica específica de cada herramienta
+}
+
+function submitPractice() {
+    // Simular evaluación
+    const score = Math.floor(Math.random() * 40) + 60; // Puntuación entre 60-100
+    const time = '05:23'; // Tiempo simulado
+    
+    document.getElementById('practice-score').textContent = score + '/100';
+    document.getElementById('practice-time').textContent = time;
+    
+    // Generar retroalimentación
+    let feedback = '';
+    if (score >= 90) {
+        feedback = '¡Excelente trabajo! Has demostrado un dominio completo del tema.';
+    } else if (score >= 80) {
+        feedback = 'Muy buen trabajo. Solo algunos detalles menores por mejorar.';
+    } else if (score >= 70) {
+        feedback = 'Buen trabajo. Revisa los conceptos que no quedaron claros.';
+    } else {
+        feedback = 'Necesitas repasar algunos conceptos fundamentales.';
+    }
+    
+    document.getElementById('practice-feedback').innerHTML = `<p>${feedback}</p>`;
+}
+
+// Manejo de redimensionamiento de ventana
+window.addEventListener('resize', () => {
+    if (camera && renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+});
+
+// Función para capturar pantalla
+function takeScreenshot() {
+    if (renderer) {
+        renderer.render(scene, camera);
+        const dataURL = renderer.domElement.toDataURL('image/png');
+        
+        // Crear enlace de descarga
+        const link = document.createElement('a');
+        link.download = 'screenshot-3d.png';
+        link.href = dataURL;
+        link.click();
+    }
+}
+
+// Función para modo pantalla completa
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+// Exportar funciones para uso global
+window.takeScreenshot = takeScreenshot;
+window.toggleFullscreen = toggleFullscreen;
 
