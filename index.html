@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura de Máquinas 3D - Universidad Nacional de Ingeniería</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Three.js para modelos 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+
+<!-- Navbar mejorado -->
+<div class="navbar">
+  <div class="navbar-logo">
+    <img src="ImageSource/uni.png" alt="Logo UNI">
+    <div class="logo-text">
+      <h2>ARQUITECTURA DE MÁQUINAS 3D</h2>
+      <span class="subtitle">Laboratorio Virtual Interactivo</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#" id="btn-inicio" class="nav-link"><i class="fas fa-home"></i> INICIO</a></li>
+    <li class="divider"></li>
+    <li>
+      <select id="select-temas" name="unidades" class="nav-select">
+        <option value="" disabled selected><i class="fas fa-cube"></i> LABORATORIOS</option>
+        <option value="unidad_I.html">🔬 Microprocesadores 3D</option>
+        <option value="unidad_II.html">🏗️ Arquitectura 3D</option>
+        <option value="unidad_III.html">⚡ Simulación 3D</option>
+        <option value="unidad_IV.html">🚀 Ensamblaje 3D</option>
+        <option value="unidad_V.html">🎯 Prácticas 3D</option>
+      </select>
+    </li>
+  </ul>
+</div>
+
+<!-- Hero Section 3D -->
+<section class="hero-3d">
+  <div class="hero-content">
+    <h1 class="hero-title">Laboratorio Virtual de Arquitectura de Máquinas</h1>
+    <p class="hero-subtitle">Explora, interactúa y aprende con modelos 3D realistas. Construye tu propia computadora virtual y comprende cada componente desde adentro.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number" data-target="15">0</div>
+        <div class="stat-label">Modelos 3D Interactivos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="50">0</div>
+        <div class="stat-label">Simulaciones Virtuales</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="100">0</div>
+        <div class="stat-label">Horas de Aprendizaje 3D</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-primary" id="btn-explorar-3d">
+        <i class="fas fa-cube"></i> EXPLORAR EN 3D
+      </button>
+      <button class="btn-secondary" id="btn-tutorial">
+        <i class="fas fa-play"></i> VER TUTORIAL
+      </button>
+    </div>
+  </div>
+  <div class="hero-3d-viewer">
+    <div id="hero-3d-container"></div>
+    <div class="controls-3d">
+      <button class="control-btn" id="rotate-left"><i class="fas fa-undo"></i></button>
+      <button class="control-btn" id="rotate-right"><i class="fas fa-redo"></i></button>
+      <button class="control-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
+      <button class="control-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <span><i class="fas fa-home"></i></span>
+  <span><i class="fas fa-chevron-right"></i></span>
+  <span>Laboratorio Virtual 3D</span>
+</div>
+
+<!-- Sección de Laboratorio Virtual 3D -->
+<section class="lab-3d-section">
+  <div class="section-header">
+    <h2><i class="fas fa-flask"></i> LABORATORIO VIRTUAL 3D</h2>
+    <p class="section-description">Sumérgete en un entorno 3D completamente interactivo donde puedes explorar, desarmar y reconstruir componentes de computadora</p>
+  </div>
+  
+  <div class="lab-controls">
+    <div class="control-panel">
+      <h3><i class="fas fa-sliders-h"></i> Controles del Laboratorio</h3>
+      <div class="control-group">
+        <label>Modo de Visualización:</label>
+        <select id="view-mode">
+          <option value="wireframe">Wireframe</option>
+          <option value="solid" selected>Solido</option>
+          <option value="transparent">Transparente</option>
+          <option value="xray">Rayos X</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Velocidad de Animación:</label>
+        <input type="range" id="animation-speed" min="0.1" max="3" step="0.1" value="1">
+        <span id="speed-value">1x</span>
+      </div>
+      <div class="control-group">
+        <label>Iluminación:</label>
+        <input type="range" id="light-intensity" min="0" max="2" step="0.1" value="1">
+        <span id="light-value">100%</span>
+      </div>
+    </div>
+    
+    <div class="component-selector">
+      <h3><i class="fas fa-microchip"></i> Seleccionar Componente</h3>
+      <div class="component-grid">
+        <div class="component-item" data-component="cpu">
+          <i class="fas fa-microchip"></i>
+          <span>CPU</span>
+        </div>
+        <div class="component-item" data-component="ram">
+          <i class="fas fa-memory"></i>
+          <span>RAM</span>
+        </div>
+        <div class="component-item" data-component="motherboard">
+          <i class="fas fa-server"></i>
+          <span>Placa Base</span>
+        </div>
+        <div class="component-item" data-component="gpu">
+          <i class="fas fa-tv"></i>
+          <span>GPU</span>
+        </div>
+        <div class="component-item" data-component="storage">
+          <i class="fas fa-hdd"></i>
+          <span>Almacenamiento</span>
+        </div>
+        <div class="component-item" data-component="psu">
+          <i class="fas fa-bolt"></i>
+          <span>Fuente</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="workspace-3d">
+    <div class="workspace-header">
+      <h3>Área de Trabajo 3D</h3>
+      <div class="workspace-tools">
+        <button class="tool-btn" id="btn-reset"><i class="fas fa-undo"></i> Resetear</button>
+        <button class="tool-btn" id="btn-screenshot"><i class="fas fa-camera"></i> Captura</button>
+        <button class="tool-btn" id="btn-fullscreen"><i class="fas fa-expand"></i> Pantalla Completa</button>
+      </div>
+    </div>
+    <div id="3d-workspace-container"></div>
+    <div class="workspace-info">
+      <div class="info-panel">
+        <h4>Información del Componente</h4>
+        <div id="component-info">
+          <p>Selecciona un componente para ver su información detallada</p>
+        </div>
+      </div>
+      <div class="action-panel">
+        <h4>Acciones Disponibles</h4>
+        <div class="action-buttons">
+          <button class="action-btn" id="btn-explode"><i class="fas fa-expand-arrows-alt"></i> Explotar</button>
+          <button class="action-btn" id="btn-cut"><i class="fas fa-cut"></i> Cortar</button>
+          <button class="action-btn" id="btn-measure"><i class="fas fa-ruler"></i> Medir</button>
+          <button class="action-btn" id="btn-animate"><i class="fas fa-play"></i> Animar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de Simulador de Ensamblaje -->
+<section class="assembly-simulator">
+  <div class="section-header">
+    <h2><i class="fas fa-tools"></i> SIMULADOR DE ENSAMBLAJE 3D</h2>
+    <p class="section-description">Aprende a ensamblar una computadora paso a paso con nuestro simulador interactivo 3D</p>
+  </div>
+  
+  <div class="simulator-container">
+    <div class="simulator-sidebar">
+      <div class="step-indicator">
+        <h3>Paso <span id="current-step">1</span> de <span id="total-steps">8</span></h3>
+        <div class="progress-bar">
+          <div class="progress-fill" id="step-progress"></div>
+        </div>
+      </div>
+      
+      <div class="step-instructions">
+        <h4>Instrucciones</h4>
+        <div id="step-content">
+          <p>Selecciona "Comenzar Ensamblaje" para iniciar el tutorial paso a paso</p>
+        </div>
+      </div>
+      
+      <div class="simulator-controls">
+        <button class="sim-btn" id="btn-start-assembly">
+          <i class="fas fa-play"></i> Comenzar Ensamblaje
+        </button>
+        <button class="sim-btn" id="btn-prev-step" disabled>
+          <i class="fas fa-chevron-left"></i> Anterior
+        </button>
+        <button class="sim-btn" id="btn-next-step" disabled>
+          Siguiente <i class="fas fa-chevron-right"></i>
+        </button>
+        <button class="sim-btn" id="btn-auto-assembly">
+          <i class="fas fa-magic"></i> Ensamblaje Automático
+        </button>
+      </div>
+      
+      <div class="component-checklist">
+        <h4>Lista de Componentes</h4>
+        <ul id="component-list">
+          <li class="component-check" data-component="cpu">
+            <i class="fas fa-microchip"></i> CPU
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="ram">
+            <i class="fas fa-memory"></i> Memoria RAM
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="motherboard">
+            <i class="fas fa-server"></i> Placa Base
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="gpu">
+            <i class="fas fa-tv"></i> Tarjeta Gráfica
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="storage">
+            <i class="fas fa-hdd"></i> Almacenamiento
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="psu">
+            <i class="fas fa-bolt"></i> Fuente de Poder
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="case">
+            <i class="fas fa-box"></i> Gabinete
+            <span class="check-status">⏳</span>
+          </li>
+          <li class="component-check" data-component="cooling">
+            <i class="fas fa-fan"></i> Sistema de Enfriamiento
+            <span class="check-status">⏳</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="simulator-workspace">
+      <div id="assembly-3d-container"></div>
+      <div class="workspace-overlay">
+        <div class="highlight-box" id="highlight-area"></div>
+        <div class="connection-lines" id="connection-guides"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de Tutoriales Interactivos -->
+<section class="interactive-tutorials">
+  <div class="section-header">
+    <h2><i class="fas fa-graduation-cap"></i> TUTORIALES INTERACTIVOS 3D</h2>
+    <p class="section-description">Aprende conceptos complejos de arquitectura de computadoras a través de tutoriales interactivos con modelos 3D</p>
+  </div>
+  
+  <div class="tutorial-grid">
+    <div class="tutorial-card" data-tutorial="cpu-architecture">
+      <div class="tutorial-preview">
+        <div class="preview-3d" id="tutorial-cpu-preview"></div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+      <div class="tutorial-content">
+        <h3>Arquitectura del CPU</h3>
+        <p>Explora la estructura interna de un procesador y comprende cómo funciona cada componente</p>
+        <div class="tutorial-meta">
+          <span><i class="fas fa-clock"></i> 15 min</span>
+          <span><i class="fas fa-star"></i> Avanzado</span>
+        </div>
+        <button class="tutorial-btn">Comenzar Tutorial</button>
+      </div>
+    </div>
+    
+    <div class="tutorial-card" data-tutorial="memory-hierarchy">
+      <div class="tutorial-preview">
+        <div class="3d-preview" id="tutorial-memory-preview"></div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+      <div class="tutorial-content">
+        <h3>Jerarquía de Memoria</h3>
+        <p>Visualiza cómo se organizan los diferentes niveles de memoria en una computadora</p>
+        <div class="tutorial-meta">
+          <span><i class="fas fa-clock"></i> 12 min</span>
+          <span><i class="fas fa-star"></i> Intermedio</span>
+        </div>
+        <button class="tutorial-btn">Comenzar Tutorial</button>
+      </div>
+    </div>
+    
+    <div class="tutorial-card" data-tutorial="data-flow">
+      <div class="tutorial-preview">
+        <div class="3d-preview" id="tutorial-data-preview"></div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+      <div class="tutorial-content">
+        <h3>Flujo de Datos</h3>
+        <p>Sigue el camino de los datos a través de los diferentes componentes del sistema</p>
+        <div class="tutorial-meta">
+          <span><i class="fas fa-clock"></i> 18 min</span>
+          <span><i class="fas fa-star"></i> Básico</span>
+        </div>
+        <button class="tutorial-btn">Comenzar Tutorial</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de Prácticas de Laboratorio -->
+<section class="lab-practices">
+  <div class="section-header">
+    <h2><i class="fas fa-flask-vial"></i> PRÁCTICAS DE LABORATORIO VIRTUAL</h2>
+    <p class="section-description">Realiza experimentos virtuales y comprueba tu comprensión de los conceptos de arquitectura</p>
+  </div>
+  
+  <div class="practices-container">
+    <div class="practice-selector">
+      <h3>Seleccionar Práctica</h3>
+      <div class="practice-tabs">
+        <button class="practice-tab active" data-practice="basic">Básico</button>
+        <button class="practice-tab" data-practice="intermediate">Intermedio</button>
+        <button class="practice-tab" data-practice="advanced">Avanzado</button>
+      </div>
+    </div>
+    
+    <div class="practice-workspace">
+      <div class="practice-info">
+        <h4 id="practice-title">Identificación de Componentes</h4>
+        <p id="practice-description">Identifica y etiqueta los diferentes componentes de una computadora en el modelo 3D</p>
+        <div class="practice-objectives">
+          <h5>Objetivos de Aprendizaje:</h5>
+          <ul id="practice-objectives">
+            <li>Reconocer componentes principales</li>
+            <li>Entender la función de cada parte</li>
+            <li>Identificar conexiones entre componentes</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="practice-3d-area">
+        <div id="practice-3d-container"></div>
+        <div class="practice-tools">
+          <button class="practice-tool" id="tool-label">
+            <i class="fas fa-tag"></i> Etiquetar
+          </button>
+          <button class="practice-tool" id="tool-highlight">
+            <i class="fas fa-highlighter"></i> Resaltar
+          </button>
+          <button class="practice-tool" id="tool-measure">
+            <i class="fas fa-ruler"></i> Medir
+          </button>
+          <button class="practice-tool" id="tool-rotate">
+            <i class="fas fa-sync"></i> Rotar
+          </button>
+        </div>
+      </div>
+      
+      <div class="practice-results">
+        <h4>Resultados</h4>
+        <div class="score-display">
+          <div class="score-item">
+            <span class="score-label">Puntuación:</span>
+            <span class="score-value" id="practice-score">0/100</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Tiempo:</span>
+            <span class="score-value" id="practice-time">00:00</span>
+          </div>
+        </div>
+        <div class="feedback-area" id="practice-feedback">
+          <p>Completa la práctica para recibir retroalimentación</p>
+        </div>
+        <button class="practice-submit" id="btn-submit-practice">
+          <i class="fas fa-check"></i> Enviar Respuesta
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Botón de mantenimiento mejorado -->
+<div class="cta-section">
+  <button id="btn-mantenimiento" class="boton-mantenimiento">
+    <i class="fas fa-tools"></i>
+    <span>MANTENIMIENTO PREVENTIVO 3D</span>
+    <i class="fas fa-arrow-right"></i>
+  </button>
+  <p class="cta-description">Aprende mantenimiento preventivo con simulaciones 3D interactivas</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

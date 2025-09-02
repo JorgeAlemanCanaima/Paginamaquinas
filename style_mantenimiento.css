@@ -1,0 +1,165 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #181a1b; /* igual al footer */
+  color: #d1d1d1;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar-logo img {
+  width: 60px;
+  height: auto;
+}
+
+.navbar h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.navbar ul li {
+  display: flex;
+  align-items: center;
+}
+
+.navbar ul li a {
+  color: #d1d1d1;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar ul li a:hover {
+  color: #a0ff00;
+}
+
+.navbar ul li.divider {
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  height: 20px;
+  margin: 0 10px;
+}
+
+.navbar select {
+  background-color: #2c2c2c;
+  color: #d1d1d1;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.navbar select option {
+  background-color: white;
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*final final*/
+.footer {
+  background-color: #181a1b;
+  color: #d1d1d1;
+  padding: 40px 20px;
+  margin-top: 60px; /* <-- Esta línea crea el espacio */
+  font-family: Arial, sans-serif;
+}
+
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-logo {
+  flex: 1 1 250px;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 50px;
+  height: auto;
+}
+
+.footer-desc {
+  color: #a0ff00;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.footer-language {
+  margin-top: 10px;
+  padding: 6px;
+  border-radius: 5px;
+  border: none;
+}
+
+.footer-copy {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.footer-column {
+  flex: 1 1 150px;
+  margin: 10px 0;
+}
+
+.footer-column h4 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  color: #d1d1d1;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+  color: #a0ff00;
+}

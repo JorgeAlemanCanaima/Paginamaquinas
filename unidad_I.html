@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microprocesadores y Microcontroladores</title>
+  <link rel="stylesheet" href="style_unidad1.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-logo">
+    <img src="ImageSource/uni.png" alt="Logo">
+    <h2>ARQUITECTURA DE MÁQUINAS I</h2>
+  </div>
+  <ul>
+    <li><a href="#" id="btn-inicio">INICIO</a></li>
+    <li class="divider"></li>
+      <li>
+      <select id="select-temas" name="unidades">
+        <option value="" disabled selected>TEMAS</option>
+        <option value="unidad_I.html">Microprocesadores / Microcontroladores</option>
+        <option value="unidad_II.html">Arquitectura del Microprocesador</option>
+        <option value="unidad_III.html">Unidad III</option>
+        <option value="unidad_IV.html">Unidad IV</option>
+        <option value="unidad_V.html">Unidad V</option>
+      </select>
+    </li>
+  </ul>
+</div>
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <h2>Microprocesadores y Microcontroladores</h2>
+    <hr class="section-line" />
+
+    <section class="cards">
+      <!-- CARD 1 -->
+      <div class="card">
+        <img src="ImageSource\intel.png" alt="Microprocesador Intel Core">
+        <h3>¿Qué es un Microprocesador?</h3>
+        <p>Un microprocesador es un circuito integrado que contiene la unidad central de procesamiento (CPU) de un sistema informático. Procesa millones de transistores en un chip.</p>
+        <p><strong>Aplicaciones:</strong> Computadoras, servidores, consolas de videojuegos.</p>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="card">
+        <img src="ImageSource\newman.png" alt="Arquitectura Von Neumann">
+        <h3>Arquitectura de Von Neumann</h3>
+        <p>Modelo básico para la mayoría de microprocesadores actuales. Define una estructura única para memoria e instrucciones.</p>
+        <p>Un ordenador digital de programa almacenado es aquel que mantiene sus instrucciones de programa, así como sus datos, en una memoria de acceso aleatorio (RAM) de lectura-escritura</p>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="card">
+        <img src="ImageSource/micro.png" alt="Microcontrolador Arduino">
+        <h3>¿Qué es un Microcontrolador?</h3>
+        <p>Es un sistema en chip (SoC) que incluye CPU, memoria y periféricos. Usado principalmente en sistemas embebidos.</p>
+        <p><strong>Aplicaciones:</strong> Electrodomésticos, relojes digitales, sistemas automotrices.</p>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="card">
+        <img src="ImageSource/diferencia.png" alt="Comparación entre microprocesador y microcontrolador">
+        <h3>Diferencias clave</h3>
+        <ul>
+          <li><strong>CPU:</strong> Microprocesador (solo CPU) vs Microcontrolador (CPU + RAM + I/O)</li>
+          <li><strong>Consumo:</strong> Alto vs Bajo</li>
+          <li><strong>Flexibilidad:</strong> Alta vs Limitada</li>
+          <p>En resumen, mientras que los microprocesadores son ideales para aplicaciones que requieren alta potencia de cálculo y gestión de datos, los microcontroladores son más adecuados
+            para sistemas compactos y de bajo consumo, como dispositivos de IoT y electrodomésticos inteligentes.</p>
+        </ul>
+      </div>
+
+<div class="cards">
+  <div class="card video-card">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/hPhGHGeJnFE" title="¿Qué es un Microprocesador?" allowfullscreen></iframe>
+    </div>
+    <h3>¿Qué es un Microprocesador?</h3>
+  </div>
+
+  <div class="card video-card">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/-ZTekGoR8uQ" title="¿Qué es un Microcontrolador?" allowfullscreen></iframe>
+    </div>
+    <h3>¿Qué es un Microcontrolador?</h3>
+  </div>
+</div>
+
+
+
+  
+</div>
+
+    </section>
+    
+
+    <!-- INFO EXTRA -->
+    <section class="info-comparativa">
+      <h3>Definición de Microprocesador</h3>
+      <p>Un <strong>microprocesador</strong> es el <em>cerebro de un sistema informático</em>, encargado de ejecutar instrucciones y procesar datos. Generalmente se utiliza en computadoras personales, laptops y otros sistemas que requieren gran capacidad de procesamiento.</p>
+      <ul>
+        <li>Es una <strong>unidad central de procesamiento (CPU)</strong> en un solo chip.</li>
+        <li>No incluye memoria RAM, ROM ni periféricos integrados; se conectan externamente.</li>
+        <li>Está diseñado para <strong>realizar tareas complejas</strong> con alto rendimiento.</li>
+      </ul>
+      <p><strong>Ejemplos:</strong> Intel Core i7, AMD Ryzen, ARM Cortex-A.</p>
+
+      <h3>Definición de Microcontrolador</h3>
+      <p>Un <strong>microcontrolador</strong> es un <em>sistema en un solo chip (SoC)</em> que incluye un microprocesador (CPU), memoria (RAM y ROM) y periféricos (como temporizadores, puertos de entrada/salida, convertidores ADC, etc.).</p>
+      <ul>
+        <li>Diseñado para <strong>controlar dispositivos electrónicos</strong> específicos.</li>
+        <li>Se usa en aplicaciones embebidas como electrodomésticos, automóviles, relojes digitales.</li>
+        <li><strong>Bajo consumo</strong> y recursos limitados.</li>
+      </ul>
+      <p><strong>Ejemplos:</strong> PIC16F84, Arduino (ATmega328), ESP32.</p>
+
+      <h3>Diferencias entre Microprocesador y Microcontrolador</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Microprocesador</th>
+            <th>Microcontrolador</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Componentes integrados</td>
+            <td>Solo CPU</td>
+            <td>CPU + RAM + ROM + periféricos</td>
+          </tr>
+          <tr>
+            <td>Uso principal</td>
+            <td>PCs, laptops, servidores</td>
+            <td>Control de dispositivos embebidos</td>
+          </tr>
+          <tr>
+            <td>Costo</td>
+            <td>Más caro</td>
+            <td>Más económico</td>
+          </tr>
+          <tr>
+            <td>Consumo de energía</td>
+            <td>Alto</td>
+            <td>Bajo</td>
+          </tr>
+          <tr>
+            <td>Flexibilidad</td>
+            <td>Alta</td>
+            <td>Limitada</td>
+          </tr>
+          <tr>
+            <td>Tamaño del sistema</td>
+            <td>Requiere componentes externos</td>
+            <td>Todo en un solo chip</td>
+          </tr>
+          <tr>
+            <td>Ejemplos de uso</td>
+            <td>Edición de video, videojuegos</td>
+            <td>IoT, electrodomésticos, sensores</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <!-- FIN DE NUEVO CONTENIDO -->
+
+  </main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <p class="footer-desc">PROYECTO WEB UNI 2025</p>
+      <select class="footer-language">
+        <option selected>Idioma</option>
+        <option>Español</option>
+        <option>English</option>
+      </select>
+      <p class="footer-copy">© 2025 SAUL</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Nuestros recursos</h4>
+      <ul>
+        <li><a href="#">Todas las imágenes</a></li>
+        <li><a href="#">Fotos</a></li>
+        <li><a href="#">Ilustraciones</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Información</h4>
+      <ul>
+        <li><a href="#">Acerca de</a></li>
+        <li><a href="#">Condiciones</a></li>
+        <li><a href="#">Política</a></li>
+        <li><a href="#">Licencia</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Comentario</h4>
+      <ul>
+        <li><a href="#">Contáctame :D</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

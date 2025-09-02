@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Microprocesadores y Microcontroladores</title>
+  <link rel="stylesheet" href="style_unidad2.css" />
+  <style>
+    /* ESTILO EXTRA PARA CORREGIR FOOTER FLOTANTE */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main.main-content {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="navbar-logo">
+    <img src="ImageSource/uni.png" alt="Logo" />
+    <h2>ARQUITECTURA DE MÁQUINAS I</h2>
+  </div>
+  <ul>
+    <li><a href="#" id="btn-inicio">INICIO</a></li>
+    <li class="divider"></li>
+    <li>
+      <select id="select-temas" name="unidades">
+        <option value="" disabled selected>TEMAS</option>
+        <option value="unidad_I.html">Microprocesadores / Microcontroladores</option>
+        <option value="unidad_II.html">Arquitectura del Microprocesador</option>
+        <option value="unidad_III.html">Unidad III</option>
+        <option value="unidad_IV.html">Unidad IV</option>
+        <option value="unidad_V.html">Unidad V</option>
+      </select>
+    </li>
+  </ul>
+</div>
+
+<!-- CONTENIDO -->
+<main class="main-content">
+  <h2>Arquitectura del Microprocesador</h2>
+  <hr class="section-line" />
+
+  <!-- Cards -->
+  <section class="cards">
+    <div class="card">
+      <h3>Arquitectura del Microprocesador</h3>
+      <img src="ImageSource/arquitectura.png" alt="Arquitectura del Microprocesador" />
+      <p>La arquitectura del microprocesador define la estructura interna y el modo en que se organiza la CPU para procesar datos e instrucciones.</p>
+    </div>
+
+    <div class="card">
+      <h3>Conexión con dispositivos</h3>
+      <img src="ImageSource/conexion.png" alt="Conexión del Microprocesador con dispositivos" />
+      <p>El microprocesador se conecta con dispositivos externos a través de buses y puertos, permitiendo la comunicación con memoria, periféricos y otros módulos.</p>
+    </div>
+
+    <div class="card">
+      <h3>Tipos de diagramas de bloques</h3>
+      <img src="ImageSource/diagrama_tipos.png" alt="Tipos de diagramas de bloques" />
+      <p>Representaciones visuales como diagramas de flujo, funcionales o estructurales que permiten entender cómo se relacionan los componentes del sistema.</p>
+    </div>
+
+    <div class="card">
+      <h3>Organización externa del microprocesador</h3>
+      <img src="ImageSource/terminales.png" alt="Organización externa del microprocesador" />
+      <p>Incluye las terminales o pines de entrada/salida, control, reloj, alimentación y buses, que permiten la interacción física con el entorno.</p>
+    </div>
+  </section>
+
+  <!-- Info comparativa -->
+  <section class="info-comparativa">
+    <h3>Arquitectura del Microprocesador</h3>
+    <p>La arquitectura del microprocesador define cómo se organizan y comunican los componentes internos para ejecutar instrucciones y procesar datos.</p>
+    <ul>
+      <li>Incluye la Unidad Aritmético Lógica (ALU), registros, unidad de control y buses.</li>
+      <li>Permite la ejecución eficiente de programas y manejo de datos.</li>
+    </ul>
+
+    <h3>Conexión del Microprocesador con dispositivos</h3>
+    <p>Para funcionar, el microprocesador debe interactuar con memoria, dispositivos de entrada/salida y otros periféricos mediante buses y protocolos específicos.</p>
+    <ul>
+      <li>Los buses de datos, direcciones y control facilitan esta comunicación.</li>
+      <li>Los procesos de lectura y escritura coordinan el intercambio de información.</li>
+    </ul>
+
+    <h3>Arquitectura Von Neumann</h3>
+    <p>Modelo computacional donde datos e instrucciones comparten el mismo bus y memoria.</p>
+    <ul>
+      <li>Uso de una sola memoria para instrucciones y datos.</li>
+      <li>Ejecuta instrucciones de forma secuencial.</li>
+    </ul>
+
+    <h3>Diagrama de bloques</h3>
+    <p>Representación gráfica que ilustra cómo se conectan los componentes del sistema digital o microprocesador.</p>
+    <ul>
+      <li>Incluye bloques como la ALU, registros, memoria y unidad de control.</li>
+      <li>Facilita el diseño y la comprensión funcional del sistema.</li>
+    </ul>
+
+    <h3>Organización externa del Microprocesador (terminales)</h3>
+    <p>Se refiere a los pines físicos mediante los cuales el microprocesador se comunica con el exterior.</p>
+    <ul>
+      <li>Terminales de entrada/salida (I/O), control, reloj, alimentación y buses.</li>
+      <li>Es esencial para la integración con memoria, periféricos y buses externos.</li>
+    </ul>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <p class="footer-desc">PROYECTO WEB UNI 2025</p>
+      <select class="footer-language">
+        <option selected>Idioma</option>
+        <option>Español</option>
+        <option>English</option>
+      </select>
+      <p class="footer-copy">© 2025 SAUL</p>
+    </div>
+
+    <div class="footer-column">
+      <h4>Nuestros recursos</h4>
+      <ul>
+        <li><a href="#">Todas las imágenes</a></li>
+        <li><a href="#">Fotos</a></li>
+        <li><a href="#">Ilustraciones</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Información</h4>
+      <ul>
+        <li><a href="#">Acerca de</a></li>
+        <li><a href="#">Condiciones</a></li>
+        <li><a href="#">Política</a></li>
+        <li><a href="#">Licencia</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Comentario</h4>
+      <ul>
+        <li><a href="#">Contáctame :D</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
