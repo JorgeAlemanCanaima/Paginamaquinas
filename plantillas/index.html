@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura de Máquinas 3D - Universidad Nacional de Ingeniería</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- Three.js para modelos 3D -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body>
+
+<!-- Navbar mejorado -->
+<div class="navbar">
+  <div class="navbar-logo">
+    <img src="/images/uni.png" alt="Logo UNI">
+    <div class="logo-text">
+      <h2>ARQUITECTURA DE MÁQUINAS 3D</h2>
+      <span class="subtitle" style="color: WHITE;">Laboratorio Virtual Interactivo</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#" id="btn-inicio" class="nav-link"><i class="fas fa-home"></i> INICIO</a></li>
+    <li class="divider"></li>
+    <li>
+      <select id="select-bot-ia" class="nav-select">
+        <option value="" disabled selected><i class="fas fa-robot"></i> BOT IA</option>
+        <option value="plantillas/ia.html">🤖 Ir al BOT IA</option>
+      </select>
+      
+      <script>
+        const selectBot = document.getElementById('select-bot-ia');
+      
+        selectBot.addEventListener('change', (event) => {
+          const url = event.target.value;
+          if(url) {
+            window.location.href = url; // redirige a plantillas/ia.html
+          }
+        });
+      </script>
+      
+    </li>
+  </ul>
+</div>
+
+<!-- Hero Section 3D -->
+<section class="hero-3d">
+  <div class="hero-content">
+    <h1 class="hero-title white">Laboratorio Virtual de Arquitectura de Máquinas</h1>
+    <p class="hero-subtitle " style="color: WHITE;">Explora, interactúa y aprende con modelos 3D realistas. Construye tu propia computadora virtual y comprende cada componente desde adentro.</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number" data-target="15" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Modelos 3D Interactivos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="50" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Simulaciones Virtuales</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="100" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Horas de Aprendizaje 3D</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-primary" id="btn-explorar-3d">
+        <i class="fas fa-cube"></i> EXPLORAR EN 3D
+      </button>
+      <button class="btn-secondary" id="btn-tutorial">
+        <i class="fas fa-play"></i> VER TUTORIAL
+      </button>
+    </div>
+  </div>
+  <div class="hero-3d-viewer">
+    <div id="hero-3d-container">
+      <iframe 
+    title="WS Server - 4RTX_4000+3_Capture" 
+    frameborder="0" 
+    allowfullscreen 
+    mozallowfullscreen="true" 
+    webkitallowfullscreen="true" 
+    allow="autoplay; fullscreen; xr-spatial-tracking" 
+    width="100%" 
+    height="500" 
+    src="https://sketchfab.com/models/00a87fbb47a847d5a69e388fe66ad4b4/embed">
+  </iframe>
+    </div>
+    <div class="controls-3d">
+      <button class="control-btn" id="rotate-left"><i class="fas fa-undo"></i></button>
+      <button class="control-btn" id="rotate-right"><i class="fas fa-redo"></i></button>
+      <button class="control-btn" id="zoom-in"><i class="fas fa-search-plus"></i></button>
+      <button class="control-btn" id="zoom-out"><i class="fas fa-search-minus"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <span><i class="fas fa-home"></i></span>
+  <span><i class="fas fa-chevron-right"></i></span>
+  <span>Laboratorio Virtual 3D</span>
+</div>
+
+
+  
+  
+
+
+
+<!-- Sección de Tutoriales Interactivos -->
+<section class="interactive-tutorials">
+  <div class="section-header">
+    <h2><i class="fas fa-graduation-cap"></i> TUTORIALES INTERACTIVOS 3D</h2>
+    <p class="section-description">Aprende conceptos complejos de arquitectura de computadoras a través de tutoriales interactivos con modelos 3D</p>
+  </div>
+  
+  <!-- Filtros de categorías -->
+  <div class="tutorial-filters">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="hardware">Hardware</button>
+    <button class="filter-btn" data-filter="peripherals">Periféricos</button>
+    <button class="filter-btn" data-filter="architecture">Arquitectura</button>
+  </div>
+  
+  <div class="tutorial-grid">
+    <!-- Tutorial 1: Arquitectura del CPU -->
+    <div class="tutorial-card" data-tutorial="cpu-architecture" data-category="hardware">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="AMD Ryzen 9 9950X3D 3D model" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/7354f6f9fbb2443abd58bdedeba46754/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge hardware">Hardware</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Arquitectura del CPU</h3>
+        <p>Explora la estructura interna de un procesador AMD Ryzen y comprende cómo funciona cada componente</p>
+      </div>
+    </div>
+
+    <!-- Tutorial 2: Memoria RAM G.Skill Trident Z5 -->
+    <div class="tutorial-card" data-tutorial="memory-ram" data-category="hardware">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="G.Skill Trident Z5" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/138a902bd95b4aa08462182f51e0fe1a/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge hardware">Hardware</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Memoria RAM G.Skill Trident Z5</h3>
+        <p>Analiza la estructura y funcionamiento de la memoria RAM DDR5 de alta velocidad</p>
+      </div>
+    </div>
+
+    <!-- Tutorial 3: Mouse Logitech MX Master 3S -->
+    <div class="tutorial-card" data-tutorial="mouse-logitech" data-category="peripherals">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="Logitech MX Master 3S" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/e3f9cfe03c0e4aa79570cfd2402e65fd/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge peripherals">Periféricos</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Mouse Logitech MX Master 3S</h3>
+        <p>Explora la ergonomía y tecnología de un mouse profesional de alta precisión</p>
+      </div>
+    </div>
+
+    <!-- Tutorial 4: Jerarquía de Memoria -->
+    <div class="tutorial-card" data-tutorial="memory-hierarchy" data-category="architecture">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="Memoria Ram" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/745c3d84cee2425e8b301db88d57c1e6/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge architecture">Arquitectura</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Jerarquía de Memoria</h3>
+        <p>Visualiza cómo se organizan los diferentes niveles de memoria en una computadora</p>
+      </div>
+    </div>
+
+    <!-- Tutorial 5: Flujo de Datos -->
+    <div class="tutorial-card" data-tutorial="data-flow" data-category="architecture">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="Raspberry Compute Module IO Board V3" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/dd671e7384984fd8a90930d0cfff75c7/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge architecture">Arquitectura</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Flujo de Datos en Sistemas Embebidos</h3>
+        <p>Sigue el camino de los datos a través de los diferentes componentes del sistema Raspberry Pi</p>
+      </div>
+    </div>
+
+    <!-- Tutorial 6: Placa Base -->
+    <div class="tutorial-card" data-tutorial="motherboard" data-category="hardware">
+      <div class="tutorial-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="Motherboard" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/116bdcff94174764a4783164ca57f8e7/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="tutorial-overlay">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="tutorial-badge">
+          <span class="badge hardware">Hardware</span>
+        </div>
+      </div>
+      
+      <div class="tutorial-content">
+        <h3>Arquitectura de Placa Base</h3>
+        <p>Explora la estructura y conexiones de una placa base moderna con todos sus componentes y slots</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Estadísticas de tutoriales -->
+  <div class="tutorial-stats">
+    <div class="stat-item">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Modelos 3D Disponibles</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">3</div>
+      <div class="stat-label">Categorías</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Interactivos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">HD</div>
+      <div class="stat-label">Calidad Visual</div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección de Evolución de la PC -->
+<section class="pc-evolution">
+  <div class="section-header">
+    <h2><i class="fas fa-history"></i> EVOLUCIÓN DE LA PC</h2>
+    <p class="section-description">Compara la evolución tecnológica desde las computadoras de los 90s hasta las modernas PCs gaming</p>
+  </div>
+  
+  <div class="evolution-grid">
+    <!-- PC Vieja (90s-00s) -->
+    <div class="evolution-card" data-category="vintage">
+      <div class="evolution-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="90s - 00s PC" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/451d69fabf344777a0021ea4d8b98956/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="evolution-badge">
+          <span class="badge vintage">Vintage</span>
+        </div>
+      </div>
+      
+      <div class="evolution-content">
+        <h3>PC de los 90s - 00s</h3>
+        <p>Explora las computadoras clásicas de la era dorada de la informática personal</p>
+      </div>
+    </div>
+
+    <!-- PC Nueva (Gaming) -->
+    <div class="evolution-card" data-category="modern">
+      <div class="evolution-preview">
+        <div class="sketchfab-embed-wrapper">
+          <iframe 
+            title="Custom Gaming PC" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/1a24273417534f69afa0f7c62b643ffc/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+        <div class="evolution-badge">
+          <span class="badge modern">Moderno</span>
+        </div>
+      </div>
+      
+      <div class="evolution-content">
+        <h3>PC Gaming Moderna</h3>
+        <p>Descubre las computadoras gaming de alta gama con tecnología de última generación</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Comparación de características -->
+  <div class="comparison-section">
+    <h3><i class="fas fa-balance-scale"></i> Comparación de Características</h3>
+    <div class="comparison-grid">
+      <div class="comparison-item">
+        <div class="comparison-label">Procesador</div>
+        <div class="comparison-vintage">Intel 486 / Pentium</div>
+        <div class="comparison-modern">Intel i9 / AMD Ryzen 9</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Memoria RAM</div>
+        <div class="comparison-vintage">4-32 MB</div>
+        <div class="comparison-modern">16-128 GB</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Almacenamiento</div>
+        <div class="comparison-vintage">HDD 1-10 GB</div>
+        <div class="comparison-modern">SSD 1-8 TB</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Gráficos</div>
+        <div class="comparison-vintage">VGA integrada</div>
+        <div class="comparison-modern">RTX 4090 / RX 7900</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Conectividad</div>
+        <div class="comparison-vintage">Serial, Paralelo</div>
+        <div class="comparison-modern">USB-C, WiFi 6, Bluetooth</div>
+      </div>
+      <div class="comparison-item">
+        <div class="comparison-label">Sistema Operativo</div>
+        <div class="comparison-vintage">DOS, Windows 95/98</div>
+        <div class="comparison-modern">Windows 11, Linux</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Asistente IA para Ensamblaje de PC -->
+<section class="ai-assistant">
+  <div class="section-header">
+    <h2><i class="fas fa-robot"></i> ASISTENTE IA PARA ENSAMBLAJE DE PC</h2>
+    <p>Nuestra inteligencia artificial te ayuda a elegir los componentes perfectos para tu PC según tus necesidades y presupuesto</p>
+  </div>
+
+  <div class="assistant-container">
+    <!-- Panel de configuración -->
+    <div class="config-panel">
+      <h3><i class="fas fa-cog"></i> Configura tu PC Ideal</h3>
+
+      <div class="config-group">
+        <label for="budget">💰 Presupuesto</label>
+        <select id="budget">
+          <option value="">Selecciona tu presupuesto</option>
+          <option value="500-800">$500 - $800 (Básico)</option>
+          <option value="800-1200">$800 - $1,200 (Intermedio)</option>
+          <option value="1200-2000">$1,200 - $2,000 (Avanzado)</option>
+          <option value="2000-3000">$2,000 - $3,000 (Gaming)</option>
+          <option value="3000+">$3,000+ (Alta Gama)</option>
+        </select>
+      </div>
+
+      <div class="config-group">
+        <label for="usage">🎯 Uso Principal</label>
+        <select id="usage">
+          <option value="">¿Para qué usarás tu PC?</option>
+          <option value="office">Oficina y Navegación</option>
+          <option value="gaming">Gaming</option>
+          <option value="content">Creación de Contenido</option>
+          <option value="streaming">Streaming</option>
+          <option value="workstation">Workstation Profesional</option>
+        </select>
+      </div>
+
+      <div class="config-group">
+        <label for="brand">🏷️ Preferencia de Marca</label>
+        <select id="brand">
+          <option value="">Sin preferencia</option>
+          <option value="intel">Intel (CPU)</option>
+          <option value="amd">AMD (CPU)</option>
+          <option value="nvidia">NVIDIA (GPU)</option>
+          <option value="amd-gpu">AMD (GPU)</option>
+        </select>
+      </div>
+
+      <div class="config-group">
+        <label>⭐ Características Especiales</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="rgb"> RGB y Estética</label>
+          <label><input type="checkbox" id="silent"> PC Silenciosa</label>
+          <label><input type="checkbox" id="compact"> Formato Compacto</label>
+          <label><input type="checkbox" id="upgradeable"> Fácil Actualización</label>
+        </div>
+      </div>
+
+      <button id="generate-config" class="ai-button">
+        <i class="fas fa-magic"></i> Generar Configuración IA
+      </button>
+    </div>
+
+    <!-- Panel de resultados -->
+    <div class="results-panel">
+      <div class="welcome-message" id="welcome-message">
+        <div class="welcome-icon">🤖</div>
+        <h3>¡Hola! Soy tu Asistente IA</h3>
+        <p>Completa el formulario de la izquierda y yo te ayudaré a encontrar la configuración perfecta para tu PC.</p>
+        <div class="features-list">
+          <div class="feature-item"><i class="fas fa-brain"></i> Análisis inteligente de compatibilidad</div>
+          <div class="feature-item"><i class="fas fa-dollar-sign"></i> Optimización de presupuesto</div>
+          <div class="feature-item"><i class="fas fa-chart-line"></i> Recomendaciones de rendimiento</div>
+        </div>
+      </div>
+
+      <div class="ai-results" id="ai-results" style="display:none;">
+        <div class="results-header">
+          <h3><i class="fas fa-check-circle"></i> Tu PC Ideal</h3>
+          <div class="total-price" id="total-price">$0</div>
+        </div>
+        <div class="components-list" id="components-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const generateBtn = document.getElementById('generate-config');
+  const resultsPanel = document.getElementById('ai-results');
+  const welcomeMsg = document.getElementById('welcome-message');
+  const componentsList = document.getElementById('components-list');
+  const totalPriceEl = document.getElementById('total-price');
+
+  generateBtn.addEventListener('click', async () => {
+    const budget = document.getElementById('budget').value;
+    const usage = document.getElementById('usage').value;
+    const brand = document.getElementById('brand').value;
+    const features = Array.from(document.querySelectorAll('.checkbox-group input:checked'))
+                          .map(c => c.nextSibling.textContent.trim());
+
+    if(!budget || !usage) {
+      alert("Selecciona al menos presupuesto y uso principal.");
+      return;
+    }
+
+    welcomeMsg.style.display = 'none';
+    resultsPanel.style.display = 'block';
+    componentsList.innerHTML = 'Generando...';
+
+    try {
+      const res = await fetch('/api/generate-pc-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ budget, usage, brand, features })
+      });
+
+      const data = await res.json();
+      if(data.success) {
+        const { components, totalPrice } = data.data;
+        componentsList.innerHTML = '';
+        for(const key in components){
+          const comp = components[key];
+          const div = document.createElement('div');
+          div.textContent = `${key.toUpperCase()}: ${comp.name} ($${comp.price})`;
+          componentsList.appendChild(div);
+        }
+        totalPriceEl.textContent = `$${totalPrice}`;
+      } else {
+        componentsList.innerHTML = 'Error generando la configuración.';
+      }
+    } catch(err) {
+      console.error(err);
+      componentsList.innerHTML = 'Error en la conexión con el servidor.';
+    }
+  });
+</script>
+
+
+
+<script src="/js/script.js"></script>
+<script src="/js/app.js"></script>
+
+
+
+</body>
+</html>
