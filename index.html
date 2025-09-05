@@ -19,7 +19,7 @@
     <img src="ImageSource/uni.png" alt="Logo UNI">
     <div class="logo-text">
       <h2>ARQUITECTURA DE MÁQUINAS 3D</h2>
-      <span class="subtitle">Laboratorio Virtual Interactivo</span>
+      <span class="subtitle" style="color: WHITE;">Laboratorio Virtual Interactivo</span>
     </div>
   </div>
   <ul>
@@ -41,20 +41,20 @@
 <!-- Hero Section 3D -->
 <section class="hero-3d">
   <div class="hero-content">
-    <h1 class="hero-title">Laboratorio Virtual de Arquitectura de Máquinas</h1>
-    <p class="hero-subtitle">Explora, interactúa y aprende con modelos 3D realistas. Construye tu propia computadora virtual y comprende cada componente desde adentro.</p>
+    <h1 class="hero-title white">Laboratorio Virtual de Arquitectura de Máquinas</h1>
+    <p class="hero-subtitle " style="color: WHITE;">Explora, interactúa y aprende con modelos 3D realistas. Construye tu propia computadora virtual y comprende cada componente desde adentro.</p>
     <div class="hero-stats">
       <div class="stat-item">
-        <div class="stat-number" data-target="15">0</div>
-        <div class="stat-label">Modelos 3D Interactivos</div>
+        <div class="stat-number" data-target="15" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Modelos 3D Interactivos</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" data-target="50">0</div>
-        <div class="stat-label">Simulaciones Virtuales</div>
+        <div class="stat-number" data-target="50" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Simulaciones Virtuales</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number" data-target="100">0</div>
-        <div class="stat-label">Horas de Aprendizaje 3D</div>
+        <div class="stat-number" data-target="100" style="color: WHITE;">0</div>
+        <div class="stat-label" style="color: WHITE;">Horas de Aprendizaje 3D</div>
       </div>
     </div>
     <div class="hero-actions">
@@ -67,7 +67,19 @@
     </div>
   </div>
   <div class="hero-3d-viewer">
-    <div id="hero-3d-container"></div>
+    <div id="hero-3d-container">
+      <iframe 
+    title="WS Server - 4RTX_4000+3_Capture" 
+    frameborder="0" 
+    allowfullscreen 
+    mozallowfullscreen="true" 
+    webkitallowfullscreen="true" 
+    allow="autoplay; fullscreen; xr-spatial-tracking" 
+    width="100%" 
+    height="500" 
+    src="https://sketchfab.com/models/00a87fbb47a847d5a69e388fe66ad4b4/embed">
+  </iframe>
+    </div>
     <div class="controls-3d">
       <button class="control-btn" id="rotate-left"><i class="fas fa-undo"></i></button>
       <button class="control-btn" id="rotate-right"><i class="fas fa-redo"></i></button>
@@ -273,11 +285,27 @@
   <div class="tutorial-grid">
     <div class="tutorial-card" data-tutorial="cpu-architecture">
       <div class="tutorial-preview">
-        <div class="preview-3d" id="tutorial-cpu-preview"></div>
+        
+        <!-- Aquí metemos el iframe de Sketchfab -->
+        <div class="sketchfab-embed-wrapper" style="width: 100%; height: 250px; overflow: hidden; border-radius: 12px;">
+          <iframe 
+            title="AMD Ryzen 9 9950X3D 3D model" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/7354f6f9fbb2443abd58bdedeba46754/embed"
+            style="width: 100%; height: 100%; border: none;">
+          </iframe>
+        </div>
+  
+        <!-- Overlay de play -->
         <div class="tutorial-overlay">
           <i class="fas fa-play"></i>
         </div>
       </div>
+      
       <div class="tutorial-content">
         <h3>Arquitectura del CPU</h3>
         <p>Explora la estructura interna de un procesador y comprende cómo funciona cada componente</p>
@@ -288,43 +316,87 @@
         <button class="tutorial-btn">Comenzar Tutorial</button>
       </div>
     </div>
+  </div>
     
-    <div class="tutorial-card" data-tutorial="memory-hierarchy">
-      <div class="tutorial-preview">
-        <div class="3d-preview" id="tutorial-memory-preview"></div>
-        <div class="tutorial-overlay">
-          <i class="fas fa-play"></i>
-        </div>
+  <div class="tutorial-card" data-tutorial="memory-hierarchy">
+    <div class="tutorial-preview">
+      
+      <!-- Modelo 3D de Memoria RAM -->
+      <div class="sketchfab-embed-wrapper" style="width: 100%; height: 250px; overflow: hidden; border-radius: 12px;">
+        <iframe 
+          title="Memoria Ram" 
+          frameborder="0" 
+          allowfullscreen 
+          mozallowfullscreen="true" 
+          webkitallowfullscreen="true" 
+          allow="autoplay; fullscreen; xr-spatial-tracking" 
+          src="https://sketchfab.com/models/745c3d84cee2425e8b301db88d57c1e6/embed"
+          style="width: 100%; height: 100%; border: none;">
+        </iframe>
+        <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+          <a href="https://sketchfab.com/3d-models/memoria-ram-745c3d84cee2425e8b301db88d57c1e6?utm_medium=embed&utm_campaign=share-popup&utm_content=745c3d84cee2425e8b301db88d57c1e6" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Memoria Ram </a> by 
+          <a href="https://sketchfab.com/dylanlaran011?utm_medium=embed&utm_campaign=share-popup&utm_content=745c3d84cee2425e8b301db88d57c1e6" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> dylanlaran011 </a> on 
+          <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=745c3d84cee2425e8b301db88d57c1e6" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+        </p>
       </div>
-      <div class="tutorial-content">
-        <h3>Jerarquía de Memoria</h3>
-        <p>Visualiza cómo se organizan los diferentes niveles de memoria en una computadora</p>
-        <div class="tutorial-meta">
-          <span><i class="fas fa-clock"></i> 12 min</span>
-          <span><i class="fas fa-star"></i> Intermedio</span>
-        </div>
-        <button class="tutorial-btn">Comenzar Tutorial</button>
+  
+      <!-- Overlay de play (opcional, transparente) -->
+      <div class="tutorial-overlay">
+        <i class="fas fa-play"></i>
       </div>
     </div>
-    
-    <div class="tutorial-card" data-tutorial="data-flow">
-      <div class="tutorial-preview">
-        <div class="3d-preview" id="tutorial-data-preview"></div>
-        <div class="tutorial-overlay">
-          <i class="fas fa-play"></i>
-        </div>
+  
+    <div class="tutorial-content">
+      <h3>Jerarquía de Memoria</h3>
+      <p>Visualiza cómo se organizan los diferentes niveles de memoria en una computadora</p>
+      <div class="tutorial-meta">
+        <span><i class="fas fa-clock"></i> 12 min</span>
+        <span><i class="fas fa-star"></i> Intermedio</span>
       </div>
-      <div class="tutorial-content">
-        <h3>Flujo de Datos</h3>
-        <p>Sigue el camino de los datos a través de los diferentes componentes del sistema</p>
-        <div class="tutorial-meta">
-          <span><i class="fas fa-clock"></i> 18 min</span>
-          <span><i class="fas fa-star"></i> Básico</span>
-        </div>
-        <button class="tutorial-btn">Comenzar Tutorial</button>
-      </div>
+      <button class="tutorial-btn">Comenzar Tutorial</button>
     </div>
   </div>
+  
+    
+  <div class="tutorial-card" data-tutorial="data-flow">
+    <div class="tutorial-preview">
+  
+      <!-- Modelo 3D Raspberry Compute Module -->
+      <div class="sketchfab-embed-wrapper" style="width: 100%; height: 250px; overflow: hidden; border-radius: 12px;">
+        <iframe 
+          title="Raspberry Compute Module IO Board V3" 
+          frameborder="0" 
+          allowfullscreen 
+          mozallowfullscreen="true" 
+          webkitallowfullscreen="true" 
+          allow="autoplay; fullscreen; xr-spatial-tracking" 
+          src="https://sketchfab.com/models/dd671e7384984fd8a90930d0cfff75c7/embed"
+          style="width: 100%; height: 100%; border: none;">
+        </iframe>
+        <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+          <a href="https://sketchfab.com/3d-models/raspberry-compute-module-io-board-v3-dd671e7384984fd8a90930d0cfff75c7?utm_medium=embed&utm_campaign=share-popup&utm_content=dd671e7384984fd8a90930d0cfff75c7" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> Raspberry Compute Module IO Board V3 </a> by 
+          <a href="https://sketchfab.com/Fa_Sketch?utm_medium=embed&utm_campaign=share-popup&utm_content=dd671e7384984fd8a90930d0cfff75c7" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;"> F2A </a> on 
+          <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=dd671e7384984fd8a90930d0cfff75c7" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+        </p>
+      </div>
+  
+      <!-- Overlay de play -->
+      <div class="tutorial-overlay">
+        <i class="fas fa-play"></i>
+      </div>
+    </div>
+  
+    <div class="tutorial-content">
+      <h3>Flujo de Datos</h3>
+      <p>Sigue el camino de los datos a través de los diferentes componentes del sistema</p>
+      <div class="tutorial-meta">
+        <span><i class="fas fa-clock"></i> 18 min</span>
+        <span><i class="fas fa-star"></i> Básico</span>
+      </div>
+      <button class="tutorial-btn">Comenzar Tutorial</button>
+    </div>
+  </div>
+  
 </section>
 
 <!-- Sección de Prácticas de Laboratorio -->
